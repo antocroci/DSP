@@ -1,4 +1,6 @@
-﻿#!/usr/bin/env python3
+﻿"""
+
+#!/usr/bin/env python3
 """
 Main Script para Análisis DOA/TDOA
 Integra todos los módulos para realizar análisis completos de estimación de dirección de arribo
@@ -538,3 +540,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+"""
