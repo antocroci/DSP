@@ -1,0 +1,144 @@
+{
+  "angulos": [
+    {
+      "tdoa": {
+        "correlacion": {
+          "error": "object of type 'numpy.float64' has no len()",
+          "metodo": "correlacion",
+          "valido": false
+        },
+        "gcc_phat": {
+          "error": "object of type 'numpy.float64' has no len()",
+          "metodo": "gcc_phat",
+          "valido": false
+        },
+        "gcc_scot": {
+          "error": "object of type 'numpy.float64' has no len()",
+          "metodo": "gcc_scot",
+          "valido": false
+        }
+      },
+      "doa": {
+        "circular": {
+          "error": "Promediado fall\u00f3",
+          "metodo": "circular",
+          "valido": false
+        },
+        "ponderado": {
+          "error": "Promediado fall\u00f3",
+          "metodo": "ponderado",
+          "valido": false
+        }
+      },
+      "angulo_real": 15,
+      "spacing": 0.1,
+      "parametro": 15
+    },
+    {
+      "tdoa": {
+        "correlacion": {
+          "error": "object of type 'numpy.float64' has no len()",
+          "metodo": "correlacion",
+          "valido": false
+        },
+        "gcc_phat": {
+          "error": "object of type 'numpy.float64' has no len()",
+          "metodo": "gcc_phat",
+          "valido": false
+        },
+        "gcc_scot": {
+          "error": "object of type 'numpy.float64' has no len()",
+          "metodo": "gcc_scot",
+          "valido": false
+        }
+      },
+      "doa": {
+        "circular": {
+          "error": "object of type 'numpy.float64' has no len()",
+          "metodo": "circular",
+          "valido": false
+        },
+        "ponderado": {
+          "error": "object of type 'numpy.float64' has no len()",
+          "metodo": "ponderado",
+          "valido": false
+        }
+      },
+      "angulo_real": 30,
+      "spacing": 0.1,
+      "parametro": 30
+    },
+    {
+      "tdoa": {
+        "correlacion": {
+          "error": "object of type 'numpy.float64' has no len()",
+          "metodo": "correlacion",
+          "valido": false
+        },
+        "gcc_phat": {
+          "error": "object of type 'numpy.float64' has no len()",
+          "metodo": "gcc_phat",
+          "valido": false
+        },
+        "gcc_scot": {
+          "error": "object of type 'numpy.float64' has no len()",
+          "metodo": "gcc_scot",
+          "valido": false
+        }
+      },
+      "doa": {
+        "circular": {
+          "error": "object of type 'numpy.float64' has no len()",
+          "metodo": "circular",
+          "valido": false
+        },
+        "ponderado": {
+          "error": "object of type 'numpy.float64' has no len()",
+          "metodo": "ponderado",
+          "valido": false
+        }
+      },
+      "angulo_real": 45,
+      "spacing": 0.1,
+      "parametro": 45
+    },
+    {
+      "tdoa": {
+        "correlacion": {
+          "error": "object of type 'numpy.float64' has no len()",
+          "metodo": "correlacion",
+          "valido": false
+        },
+        "gcc_phat": {
+          "error": "object of type 'numpy.float64' has no len()",
+          "metodo": "gcc_phat",
+          "valido": false
+        },
+        "gcc_scot": {
+          "error": "object of type 'numpy.float64' has no len()",
+          "metodo": "gcc_scot",
+          "valido": false
+        }
+      },
+      "doa": {
+        "circular": {
+          "error": "object of type 'numpy.float64' has no len()",
+          "metodo": "circular",
+          "valido": false
+        },
+        "ponderado": {
+          "error": "object of type 'numpy.float64' has no len()",
+          "metodo": "ponderado",
+          "valido": false
+        }
+      },
+      "angulo_real": 60,
+      "spacing": 0.1,
+      "parametro": 60
+    }
+  ],
+  "distancias": [],
+  "snr_values": [],
+  "num_mics": [],
+  "spacing_values": []
+}
