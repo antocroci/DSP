@@ -44,16 +44,16 @@
   "sources": [
     {
       "position": [
-        3.7320508075688776,
-        2.5,
+        2.9335804264972016,
+        1.8583679495453003,
         1.0
       ],
-      "azimuth": 30.0,
+      "azimuth": 21.0,
       "elevation": 0.0,
-      "distance": 2.0
+      "distance": 1.0
     }
   ],
   "snr_db": 20.0,
-  "length_samples": 16182,
-  "duration_s": 1.011375
+  "length_samples": 16136,
+  "duration_s": 1.0085
 }
