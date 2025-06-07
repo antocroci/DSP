@@ -900,13 +900,4 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"❌ Error en configuración: {e}")
     
-    # Crear configuración
-config = crear_config_campo_libre(azimuth=30, distancia=2.0)
-
-    # Ejecutar simulación
-simulador = SimuladorAcustico(config)
-signals, metadata = simulador.ejecutar_simulacion_completa()
-
-    # Visualizar
-simulador.visualizar_setup()
-print("\n¡Testing simulación completado!")
+    print("\n¡Testing simulación completado!")

@@ -492,7 +492,7 @@ if __name__ == "__main__":
     
     # Ambiente anecoico
     sim.simular_ambiente_anecoico()
-    sim.agregar_fuente(signal, azimuth=int(input("Ingrese el ángulo que desea")), distance=int(input("Ingrese la distancia a la fuente")))
+    sim.agregar_fuente(signal, azimuth=30, distance=2.0)
     sim.simular_propagacion(agregar_ruido=True, snr_db=20)
     
     # Guardar y visualizar
