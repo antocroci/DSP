@@ -32,9 +32,9 @@ class SimuladorDOA:
         }
         
     def crear_array_microfonos(self, 
-                              num_mics: int = 4, 
-                              spacing: float = 0.1,
-                              center_pos: List[float] = [2.0, 1.5, 1.0]) -> np.ndarray:
+                                num_mics: int = 4, 
+                                spacing: float = 0.1,
+                                center_pos: List[float] = [2.0, 1.5, 1.0]) -> np.ndarray:
         """
         Crea un array lineal de micrófonos
         
@@ -50,6 +50,9 @@ class SimuladorDOA:
         print("   Posición del centro del array:")
     
         center = np.array([float(input("     Posición X [default: 2.0]: ") or 2), float(input("     Posición Y [default: 1.5]: ") or 1.5), float(input("     Posición Z [default: 1.0]: ") or 1.0)]) 
+        
+        num_mics = int(input("Ingrese el número de microfonos a utilizar (default 4): ") or 4)
+        
         mic_positions = np.zeros((3, num_mics))
         
         # Calcular posiciones simétricas alrededor del centro
@@ -61,7 +64,7 @@ class SimuladorDOA:
             mic_positions[2, i] = center[2]  # Z
             
         self.array_geometry = {
-            'num_mics': int(input("Ingrese el número de micrófonos a utilizar (default 4): ") or 4),
+            'num_mics': num_mics,
             'positions': mic_positions,
             'spacing': float(input("Ingrese el espacio entre micrófonos (default 0.1): ") or 0.1),
             'center': center
@@ -116,8 +119,8 @@ class SimuladorDOA:
         # Calcular absorción para RT60 deseado
         volume = np.prod(room_size)
         surface_area = 2 * (room_size[0]*room_size[1] + 
-                           room_size[0]*room_size[2] + 
-                           room_size[1]*room_size[2])
+                            room_size[0]*room_size[2] + 
+                            room_size[1]*room_size[2])
         
         absorption = 0.161 * volume / (rt60 * surface_area)
         absorption = min(absorption, 0.99)
@@ -156,10 +159,10 @@ class SimuladorDOA:
         return self.room
     
     def agregar_fuente(self, 
-                      signal: np.ndarray,
-                      azimuth: float,
-                      distance: float = 2.0,
-                      elevation: float = 0.0) -> List[float]:
+                        signal: np.ndarray,
+                        azimuth: float,
+                        distance: float = 2.0,
+                        elevation: float = 0.0) -> List[float]:
         """
         Agrega una fuente sonora al ambiente
         """
@@ -329,7 +332,7 @@ class SimuladorDOA:
             print(f"  Ruido ambiente: {self.ruido_ambiente_config['tipo']}, {self.ruido_ambiente_config['nivel_db']:.1f} dB")
     
     def guardar_senales(self, directorio: str = "simulaciones", 
-                       nombre_experimento: str = "exp_001"):
+                        nombre_experimento: str = "exp_001"):
         """
         Guarda las señales simuladas y metadatos
         """
@@ -448,7 +451,7 @@ class SimuladorDOA:
         for i, source_info in enumerate(self.source_positions):
             pos = source_info['position']
             ax1.scatter(pos[0], pos[1], c='red', s=150, marker='*', 
-                       label='Fuentes' if i == 0 else "")
+                        label='Fuentes' if i == 0 else "")
             ax1.annotate(f'S{i+1}\n{source_info["azimuth"]:.0f}°', 
                         (pos[0], pos[1]), xytext=(5, 5), textcoords='offset points')
         
@@ -551,7 +554,7 @@ class SimuladorDOA:
         # Dibujar micrófonos
         for i in range(mic_pos.shape[1]):
             ax1.scatter(mic_pos[0, i], mic_pos[1, i], c=colors[i % len(colors)], s=100, 
-                       marker='o', label=f'Mic {i+1}')
+                        marker='o', label=f'Mic {i+1}')
             ax1.annotate(f'M{i+1}', (mic_pos[0, i], mic_pos[1, i]), 
                         xytext=(5, 5), textcoords='offset points')
         
@@ -708,17 +711,17 @@ if __name__ == "__main__":
         # Ambiente anecoico CON ruido ambiente
         sim.simular_ambiente_anecoico(
             room_size=[float(input("   Ancho del recinto (X) en metros [default: 6.0]: ") or 6.0), 
-                       float(input("   Largo del recinto (Y) en metros [default: 4.0]: ") or 4.0),
+                        float(input("   Largo del recinto (Y) en metros [default: 4.0]: ") or 4.0),
                         float(input("   Altura del recinto (Z) en metros [default: 3.0]: ") or 3.0)], 
             max_order = 0,
             absorption = float(input("Ingrese el coeficiente de absorción de la sala (default 1): ") or 1),
             air_absorption=False
     )
     else:
-           # Ambiente reverberante CON ruido ambiente
+        # Ambiente reverberante CON ruido ambiente
         sim.simular_ambiente_reverberante(
             room_size=[float(input("   Ancho del recinto (X) en metros [default: 6.0]: ") or 6.0), 
-                       float(input("   Largo del recinto (Y) en metros [default: 4.0]: ") or 4.0),
+                        float(input("   Largo del recinto (Y) en metros [default: 4.0]: ") or 4.0),
                         float(input("   Altura del recinto (Z) en metros [default: 3.0]: ") or 3.0)], 
             rt60= float(input("   RT60 en segundos [default: 0.3]: ") or 0.3),
             ruido_ambiente=True,
