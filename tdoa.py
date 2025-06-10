@@ -138,48 +138,6 @@ class EstimadorTDOA:
         
         return gcc_phat, lags
     
-    def gcc_scot(self, 
-                 x1: np.ndarray, 
-                 x2: np.ndarray, 
-                 epsilon: float = 1e-12) -> Tuple[np.ndarray, np.ndarray]:
-        """
-        GCC-SCOT (Smoothed Coherence Transform)
-        
-        Args:
-            x1, x2: Señales de entrada
-            epsilon: Pequeño valor para evitar división por cero
-            
-        Returns:
-            gcc_scot: Correlación GCC-SCOT
-            lags: Vector de retardos
-        """
-        min_len = min(len(x1), len(x2))
-        x1 = x1[:min_len]
-        x2 = x2[:min_len]
-        
-        n_fft = 2 * min_len - 1
-        X1 = fft(x1, n=n_fft)
-        X2 = fft(x2, n=n_fft)
-        
-        # Auto-power spectra
-        S11 = X1 * np.conj(X1)
-        S22 = X2 * np.conj(X2)
-        
-        # Cross-power spectrum
-        S12 = X1 * np.conj(X2)
-        
-        # SCOT weighting
-        scot_weight = 1.0 / (np.sqrt(S11 * S22) + epsilon)
-        scot_spectrum = S12 * scot_weight
-        
-        # IFFT
-        gcc_scot = np.real(ifft(scot_spectrum))
-        gcc_scot = np.fft.fftshift(gcc_scot)
-        
-        lags = np.arange(-min_len + 1, min_len)
-        
-        return gcc_scot, lags
-    
     def estimar_tdoa_par(self, 
                         mic1: np.ndarray, 
                         mic2: np.ndarray, 
@@ -205,8 +163,6 @@ class EstimadorTDOA:
             correlation, lags = self.gcc_basico(mic1, mic2)
         elif metodo == 'gcc_phat':
             correlation, lags = self.gcc_phat(mic1, mic2)
-        elif metodo == 'gcc_scot':
-            correlation, lags = self.gcc_scot(mic1, mic2)
         else:
             raise ValueError(f"Método desconocido: {metodo}")
         
