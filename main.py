@@ -33,7 +33,11 @@ if ambiente_tipo == "1":
     sim.simular_ambiente_anecoico(
         room_size=[float(input("   Ancho del recinto (X) en metros [default: 6.0]: ") or 6.0), 
                     float(input("   Largo del recinto (Y) en metros [default: 4.0]: ") or 4.0),
-                    float(input("   Altura del recinto (Z) en metros [default: 3.0]: ") or 3.0)]
+                    float(input("   Altura del recinto (Z) en metros [default: 3.0]: ") or 3.0)],
+                    max_order = 0,
+                    absorption = float(input("Ingrese el coeficiente de absorción de la sala (default 1): ") or 1),
+                    air_absorption=False
+        
     )
 else:
     # Ambiente reverberante CON ruido ambiente
@@ -42,9 +46,6 @@ else:
                     float(input("   Largo del recinto (Y) en metros [default: 4.0]: ") or 4.0),
                     float(input("   Altura del recinto (Z) en metros [default: 3.0]: ") or 3.0)], 
         rt60= float(input("   RT60 en segundos [default: 0.3]: ") or 0.3),
-        ruido_ambiente=True,
-        nivel_ruido_db=-40,  # Ruido ambiente moderado
-        tipo_ruido='rosa'      # Ruido rosa (más realista)
     )
     
 # Crear señal de prueba
