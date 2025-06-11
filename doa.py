@@ -66,7 +66,7 @@ class EstimadorDOA:
                 
                 # Calcular incertidumbre basada en confianza de TDOA
                 confidence = tdoa_data.get('confidence', 1.0)
-                uncertainty_rad = np.arcsin(self.c / (spacing * confidence)) if confidence > 0 else np.pi/2
+                uncertainty_rad = np.arcsin(min(1.0, max(-1.0, self.c / (spacing * confidence)))) if confidence > 0 else np.pi/2
                 uncertainty_deg = np.degrees(uncertainty_rad)
                 
                 angulos[par_key] = {
