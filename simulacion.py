@@ -52,6 +52,7 @@ class SimuladorDOA:
         center = np.array([float(input("     Posición X [default: 2.0]: ") or 2), float(input("     Posición Y [default: 1.5]: ") or 1.5), float(input("     Posición Z [default: 1.0]: ") or 1.0)]) 
         
         num_mics = int(input("Ingrese el número de microfonos a utilizar (default 4): ") or 4)
+        spacing = float(input("Ingrese el espacio entre micrófonos (default 0.1): ") or 0.1)
         
         mic_positions = np.zeros((3, num_mics))
         
@@ -66,7 +67,7 @@ class SimuladorDOA:
         self.array_geometry = {
             'num_mics': num_mics,
             'positions': mic_positions,
-            'spacing': float(input("Ingrese el espacio entre micrófonos (default 0.1): ") or 0.1),
+            'spacing': spacing,
             'center': center
         }
         
@@ -76,7 +77,11 @@ class SimuladorDOA:
             
         return mic_positions
     
-    def simular_ambiente_anecoico(self, room_size: List[float] = [10, 8, 3]) -> object:
+    def simular_ambiente_anecoico(self, 
+                                room_size: List[float] = [10, 8, 3],
+                                max_order = 0,
+                                absorption = 1,
+                                air_absorption=False) -> object:
         """
         Crea un ambiente anecoico (sin reflexiones)
         """
@@ -85,9 +90,9 @@ class SimuladorDOA:
         self.room = pra.ShoeBox(
             room_size,
             fs=self.fs,
-            max_order=0,  # Sin reflexiones
-            absorption=1.0,
-            air_absorption=False
+            max_order= max_order,  # Sin reflexiones
+            absorption= absorption,
+            air_absorption= air_absorption
         )
         
         if self.array_geometry is None:
@@ -702,7 +707,7 @@ if __name__ == "__main__":
     print("=== SIMULADOR DOA CON RUIDO AMBIENTE - PRUEBA ===")
 
     print("\n2. PARÁMETROS ACÚSTICOS:")
-    ambiente_tipo = input("   Tipo de ambiente (1=Anecoico, 2=Reverberante) [default: 2]: ") or "2"
+    ambiente_tipo = int(input("   Tipo de ambiente (1=Anecoico, 2=Reverberante) [default: 2]: ") or 2)
 
     # Crear simulador
     sim = SimuladorDOA(fs=16000)
@@ -713,9 +718,9 @@ if __name__ == "__main__":
             room_size=[float(input("   Ancho del recinto (X) en metros [default: 6.0]: ") or 6.0), 
                         float(input("   Largo del recinto (Y) en metros [default: 4.0]: ") or 4.0),
                         float(input("   Altura del recinto (Z) en metros [default: 3.0]: ") or 3.0)], 
-            max_order = 0,
-            absorption = float(input("Ingrese el coeficiente de absorción de la sala (default 1): ") or 1),
-            air_absorption=False
+                        max_order = 0,
+                        absorption = float(input("Ingrese el coeficiente de absorción de la sala (default 1): ") or 1),
+                        air_absorption=False
     )
     else:
         # Ambiente reverberante CON ruido ambiente
