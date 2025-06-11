@@ -106,9 +106,7 @@ class SimuladorDOA:
     def simular_ambiente_reverberante(self, 
                                     room_size: List[float] = [6, 4, 3],
                                     rt60: float = 0.3,
-                                    ruido_ambiente: bool = False,
-                                    nivel_ruido_db: float = -40.0,
-                                    tipo_ruido: str = 'rosa') -> object:
+                                    ) -> object:
         """
         Crea un ambiente reverberante con opción de ruido ambiente
         
@@ -150,7 +148,7 @@ class SimuladorDOA:
         self.ruido_ambiente_config['habilitado'] = (ruido_habilitado == 's')
         
         if self.ruido_ambiente_config['habilitado']:
-            self.ruido_ambiente_config['nivel_ruido_db'] = float(input("   Nivel de ruido ambiente en dB [default: -40]: ") or 40)
+            self.ruido_ambiente_config['nivel_db'] = float(input("   Nivel de ruido ambiente en dB [default: -40]: ") or -40)
             print("   Tipos de ruido: 1=Blanco, 2=Rosa, 3=Marrón")
             tipo_ruido_num = input("   Tipo de ruido [default: 2]: ") or 2
             tipos = {'1': 'blanco', '2': 'rosa', '3': 'marron'}
@@ -158,8 +156,10 @@ class SimuladorDOA:
     
         
         print(f"Ambiente reverberante creado: RT60={rt60:.2f}s, Absorción={absorption:.3f}")
-        if ruido_ambiente:
-            print(f"  Ruido ambiente: {tipo_ruido}, {nivel_ruido_db:.1f} dB")
+        
+        if self.ruido_ambiente_config['habilitado']:
+            print(f"  Ruido ambiente: {self.ruido_ambiente_config['tipo']}, {self.ruido_ambiente_config['nivel_db']:.1f} dB")
+
         
         return self.room
     
@@ -729,9 +729,6 @@ if __name__ == "__main__":
                         float(input("   Largo del recinto (Y) en metros [default: 4.0]: ") or 4.0),
                         float(input("   Altura del recinto (Z) en metros [default: 3.0]: ") or 3.0)], 
             rt60= float(input("   RT60 en segundos [default: 0.3]: ") or 0.3),
-            ruido_ambiente=True,
-            nivel_ruido_db=-40,  # Ruido ambiente moderado
-            tipo_ruido='rosa'      # Ruido rosa (más realista)
     )
     
     # Crear señal de prueba
