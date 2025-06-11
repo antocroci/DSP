@@ -22,7 +22,7 @@ from evaluacion import EvaluadorDOA
 
 print("=== SIMULADOR DOA CON RUIDO AMBIENTE - PRUEBA ===")
 
-print("\n2. PARÁMETROS ACÚSTICOS:")
+print("\n1. PARÁMETROS ACÚSTICOS:")
 ambiente_tipo = input("   Tipo de ambiente (1=Anecoico, 2=Reverberante) [default: 2]: ") or "2"
 
 # Crear simulador
@@ -52,7 +52,7 @@ else:
 signal = crear_senal_prueba("tono", duracion=1.0)
 
 # Configuración de fuentes
-print("\n5. FUENTES SONORAS:")
+print("\n2. FUENTES SONORAS:")
 azimuth_real = float(input(f"     Azimuth en grados [default: 60]: ") or 60.0)
 distancia_real = float(input("     Distancia en metros [default: 2.0]: ") or 2.0)
 elevacion_real = float(input("     Elevación en grados [default: 0.0]: ") or 0.0)

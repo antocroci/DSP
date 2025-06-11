@@ -1,7 +1,7 @@
 ﻿
 #!/usr/bin/env python3
 
-"""
+
 """
 Script de debugging simple para identificar problemas específicos
 """
@@ -126,4 +126,3 @@ if __name__ == "__main__":
     else:
         print("❌ Test básico falló - revisar configuración")
 
-"""
