@@ -47,7 +47,7 @@ else:
                     float(input("   Altura del recinto (Z) en metros [default: 3.0]: ") or 3.0)], 
         rt60= float(input("   RT60 en segundos [default: 0.3]: ") or 0.3),
     )
-    
+
 # Crear señal de prueba
 signal = crear_senal_prueba("chirp", duracion=1.0)
 
