@@ -209,7 +209,11 @@ elif len(angulos_estimados) == 1:
     print(f"\nÁngulo DOA (única estimación): {angulo_promedio:.2f}°")
     print(f"Ángulo real de la fuente: {azimuth_real:.2f}°")
     print(f"Error absoluto: {abs(angulo_promedio - azimuth_real):.2f}°")
-    resultado_promedio = {'angulo_promedio_deg': angulo_promedio, 'valido': True}
+    resultado_promedio = {'angulo_promedio_deg': angulo_promedio,
+                            'valido': True,
+                            'std_deg': 0.0,
+                            'num_estimaciones': 1,
+                        'metodo_promedio': 'unica_estimacion',}
 else:
     print("❌ No se obtuvieron estimaciones válidas de DOA")
     angulo_promedio = None
@@ -305,7 +309,7 @@ if comparar.lower() == "s":
             lags_ms = resultado['lags'] * 1000 / sim.fs  # Convertir a ms
             plt.plot(lags_ms, resultado['correlation_normalized'])
             plt.axvline(x=resultado['tdoa_seconds']*1000, color='red', linestyle='--',
-                       label=f'TDOA = {resultado["tdoa_seconds"]*1000:.2f} ms')
+                        label=f'TDOA = {resultado["tdoa_seconds"]*1000:.2f} ms')
             plt.title(f'Método: {metodo}')
             plt.xlabel('Retardo (ms)')
             plt.ylabel('Correlación Normalizada')

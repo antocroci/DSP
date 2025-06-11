@@ -20,10 +20,10 @@ class EstimadorDOA:
         self.c = c
         
     def calcular_angulo_arribo(self, 
-                              tdoas: Dict, 
-                              distancia_micros: float,
-                              geometria: str = 'linear',
-                              mic_positions: Optional[np.ndarray] = None) -> Dict:
+                                tdoas: Dict, 
+                                distancia_micros: float,
+                                geometria: str = 'linear',
+                                mic_positions: Optional[np.ndarray] = None) -> Dict:
         """
         Calcula ángulo de arribo usando TDOAs y geometría del array
         
@@ -201,9 +201,9 @@ class EstimadorDOA:
             }
     
     def promediar_angulos(self, 
-                         angulos: Dict, 
-                         metodo: str = 'circular',
-                         pesos: Optional[Dict] = None) -> Dict:
+                            angulos: Dict, 
+                            metodo: str = 'circular',
+                            pesos: Optional[Dict] = None) -> Dict:
         """
         Promedia múltiples estimaciones angulares
         
@@ -294,9 +294,9 @@ class EstimadorDOA:
         }
     
     def triangular_fuente(self, 
-                         tdoas: Dict, 
-                         mic_positions: np.ndarray,
-                         metodo: str = 'least_squares') -> Dict:
+                            tdoas: Dict, 
+                            mic_positions: np.ndarray,
+                            metodo: str = 'least_squares') -> Dict:
         """
         Triangula la posición de la fuente usando múltiples TDOAs
         
@@ -336,8 +336,8 @@ class EstimadorDOA:
             raise ValueError(f"Método de triangulación desconocido: {metodo}")
     
     def _triangular_least_squares(self, tdoas: List[float], 
-                                 mic_pairs: List[Tuple], 
-                                 mic_positions: np.ndarray) -> Dict:
+                                    mic_pairs: List[Tuple], 
+                                    mic_positions: np.ndarray) -> Dict:
         """
         Triangulación usando mínimos cuadrados
         """
@@ -388,8 +388,8 @@ class EstimadorDOA:
             }
     
     def _triangular_analytical(self, tdoas: List[float], 
-                              mic_pairs: List[Tuple], 
-                              mic_positions: np.ndarray) -> Dict:
+                                mic_pairs: List[Tuple], 
+                                mic_positions: np.ndarray) -> Dict:
         """
         Triangulación analítica (implementación simplificada)
         """
@@ -468,13 +468,13 @@ class EstimadorDOA:
             # Línea del ángulo real si se proporciona
             if angulo_real is not None:
                 ax1.axhline(y=angulo_real, color='red', linestyle='--', 
-                           label=f'Ángulo Real: {angulo_real:.1f}°')
+                            label=f'Ángulo Real: {angulo_real:.1f}°')
                 ax1.legend()
             
             # Colorbar para confianza
             sm = plt.cm.ScalarMappable(cmap=plt.cm.viridis, 
-                                     norm=plt.Normalize(vmin=min(confidencias), 
-                                                       vmax=max(confidencias)))
+                                        norm=plt.Normalize(vmin=min(confidencias), 
+                                        vmax=max(confidencias)))
             sm.set_array([])
             cbar = plt.colorbar(sm, ax=ax1)
             cbar.set_label('Confianza')
@@ -493,7 +493,7 @@ class EstimadorDOA:
             # Ángulo real en polar
             if angulo_real is not None:
                 ax2.axvline(x=np.deg2rad(angulo_real), color='red', 
-                           linestyle='--', label=f'Real: {angulo_real:.1f}°')
+                            linestyle='--', label=f'Real: {angulo_real:.1f}°')
             
             ax2.set_title('Vista Polar - Ángulos vs Confianza')
             ax2.set_ylim(0, max(radios) * 1.1)
@@ -503,7 +503,7 @@ class EstimadorDOA:
         plt.show()
     
     def generar_reporte(self, angulos: Dict, angulo_promedio: Dict, 
-                       angulo_real: Optional[float] = None) -> str:
+                        angulo_real: Optional[float] = None) -> str:
         """
         Genera un reporte textual de las estimaciones
         """
@@ -593,6 +593,8 @@ if __name__ == "__main__":
     # TDOAs simulados (basados en geometría conocida)
     tdoa_real = spacing * np.sin(np.deg2rad(angulo_real)) / estimador.c
     
+    
+    
     tdoas_simulados = {
         'mic_1_mic_2': {
             'tdoa_seconds': tdoa_real,
@@ -610,6 +612,7 @@ if __name__ == "__main__":
             'valido': True
         }
     }
+    
     
     print(f"Ángulo real: {angulo_real}°")
     print(f"TDOA teórico: {tdoa_real*1000:.3f} ms")

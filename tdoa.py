@@ -56,9 +56,9 @@ class EstimadorTDOA:
         return correlation, lags
     
     def gcc_basico(self, 
-                   x1: np.ndarray, 
-                   x2: np.ndarray, 
-                   ventana: Optional[str] = None) -> Tuple[np.ndarray, np.ndarray]:
+                    x1: np.ndarray, 
+                    x2: np.ndarray, 
+                    ventana: Optional[str] = None) -> Tuple[np.ndarray, np.ndarray]:
         """
         Generalized Cross-Correlation (GCC) básico
         
@@ -98,9 +98,9 @@ class EstimadorTDOA:
         return gcc, lags
     
     def gcc_phat(self, 
-                 x1: np.ndarray, 
-                 x2: np.ndarray, 
-                 epsilon: float = 1e-12) -> Tuple[np.ndarray, np.ndarray]:
+                x1: np.ndarray, 
+                x2: np.ndarray, 
+                epsilon: float = 1e-12) -> Tuple[np.ndarray, np.ndarray]:
         """
         GCC-PHAT (Phase Transform) - Método más robusto para TDOA
         
@@ -221,9 +221,9 @@ class EstimadorTDOA:
         }
     
     def estimar_tdoa_array(self, 
-                          signals: np.ndarray, 
-                          referencia: int = 0,
-                          metodo: str = 'gcc_phat') -> Dict:
+                            signals: np.ndarray, 
+                            referencia: int = 0,
+                            metodo: str = 'gcc_phat') -> Dict:
         """
         Estima TDOA para todo el array usando un micrófono de referencia
         
@@ -249,9 +249,9 @@ class EstimadorTDOA:
         return resultados
     
     def calcular_doa_lineal(self, 
-                           tdoas: Dict, 
-                           spacing: float,
-                           array_geometry: str = 'linear') -> Dict:
+                            tdoas: Dict, 
+                            spacing: float,
+                            array_geometry: str = 'linear') -> Dict:
         """
         Calcula DOA para array lineal usando TDOAs
         
@@ -298,8 +298,8 @@ class EstimadorTDOA:
         return angulos
     
     def evaluar_error_angular(self, 
-                             angulo_estimado: float, 
-                             angulo_real: float) -> Dict:
+                                angulo_estimado: float, 
+                                angulo_real: float) -> Dict:
         """
         Evalúa el error en la estimación angular
         
@@ -321,8 +321,8 @@ class EstimadorTDOA:
         }
     
     def visualizar_correlacion(self, 
-                              resultado_tdoa: Dict, 
-                              titulo: str = "Correlación Cruzada"):
+                                resultado_tdoa: Dict, 
+                                titulo: str = "Correlación Cruzada"):
         """
         Visualiza el resultado de correlación cruzada
         """
@@ -383,10 +383,10 @@ class EstimadorTDOA:
         return resultados
     
     def analisis_rendimiento(self, 
-                           signals: np.ndarray,
-                           angulos_reales: List[float],
-                           distancias_reales: List[float],
-                           spacing: float) -> Dict:
+                            signals: np.ndarray,
+                            angulos_reales: List[float],
+                            distancias_reales: List[float],
+                            spacing: float) -> Dict:
         """
         Análisis completo de rendimiento del sistema TDOA/DOA
         """

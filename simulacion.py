@@ -51,7 +51,7 @@ class SimuladorDOA:
     
         center = np.array([float(input("     Posición X [default: 2.0]: ") or 2), float(input("     Posición Y [default: 1.5]: ") or 1.5), float(input("     Posición Z [default: 1.0]: ") or 1.0)]) 
         
-        num_mics = int(input("Ingrese el número de microfonos a utilizar (default 4): ") or 4)
+        
         spacing = float(input("Ingrese el espacio entre micrófonos (default 0.1): ") or 0.1)
         
         mic_positions = np.zeros((3, num_mics))
