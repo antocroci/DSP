@@ -149,7 +149,7 @@ class EstimadorTDOA:
         
         Args:
             mic1, mic2: Señales de los micrófonos
-            metodo: 'correlacion', 'gcc', 'gcc_phat', 'gcc_scot'
+            metodo: 'correlacion', 'gcc', 'gcc_phat'
             busqueda_pico: 'max', 'interpolacion'
             ventana_busqueda: (min_delay, max_delay) en segundos
             
@@ -366,7 +366,7 @@ class EstimadorTDOA:
     def comparar_metodos(self, 
                         mic1: np.ndarray, 
                         mic2: np.ndarray,
-                        metodos: List[str] = ['correlacion', 'gcc_phat', 'gcc_scot']) -> Dict:
+                        metodos: List[str] = ['correlacion', 'gcc_phat']) -> Dict:
         """
         Compara diferentes métodos de estimación TDOA
         """
@@ -466,7 +466,7 @@ if __name__ == "__main__":
     print(f"TDOA real: {tdoa_real*1000:.2f} ms ({delay_samples} muestras)")
     
     # Comparar métodos
-    metodos = ['correlacion', 'gcc_phat', 'gcc_scot']
+    metodos = ['correlacion', 'gcc_phat']
     resultados = estimador.comparar_metodos(signal_orig, signal_delayed, metodos)
     
     print("\n=== RESULTADOS POR MÉTODO ===")
