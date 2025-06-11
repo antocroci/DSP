@@ -49,7 +49,7 @@ else:
     )
     
 # Crear señal de prueba
-signal = crear_senal_prueba("tono", duracion=1.0)
+signal = crear_senal_prueba("chirp", duracion=1.0)
 
 # Configuración de fuentes
 print("\n2. FUENTES SONORAS:")

@@ -21,9 +21,9 @@ class EvaluadorDOA:
         self.metricas = {}
         
     def calcular_error(self, 
-                      estimado: Union[float, List[float]], 
-                      real: Union[float, List[float]],
-                      tipo_error: str = 'absoluto') -> Dict:
+                        estimado: Union[float, List[float]], 
+                        real: Union[float, List[float]],
+                        tipo_error: str = 'absoluto') -> Dict:
         """
         Calcula diferentes tipos de errores
         
@@ -73,10 +73,10 @@ class EvaluadorDOA:
         return metricas
     
     def evaluar_metodo_tdoa(self, 
-                           estimador_tdoa,
-                           signals: np.ndarray,
-                           tdoas_reales: Dict,
-                           metodos: List[str] = ['correlacion', 'gcc_phat', 'gcc_scot']) -> Dict:
+                            estimador_tdoa,
+                            signals: np.ndarray,
+                            tdoas_reales: Dict,
+                            metodos: List[str] = ['correlacion', 'gcc_phat', 'gcc_scot']) -> Dict:
         """
         Evalúa diferentes métodos TDOA
         
@@ -140,11 +140,11 @@ class EvaluadorDOA:
         return resultados_metodos
     
     def evaluar_metodo_doa(self, 
-                          estimador_doa,
-                          tdoas_estimados: Dict,
-                          angulo_real: float,
-                          spacing: float,
-                          metodos_promedio: List[str] = ['circular', 'ponderado']) -> Dict:
+                            estimador_doa,
+                            tdoas_estimados: Dict,
+                            angulo_real: float,
+                            spacing: float,
+                            metodos_promedio: List[str] = ['circular', 'ponderado']) -> Dict:
         """
         Evalúa diferentes métodos DOA
         """
@@ -196,8 +196,8 @@ class EvaluadorDOA:
         return resultados_doa
     
     def comparar_algoritmos(self, 
-                           resultados_tdoa: Dict,
-                           resultados_doa: Dict) -> Dict:
+                            resultados_tdoa: Dict,
+                            resultados_doa: Dict) -> Dict:
         """
         Compara diferentes algoritmos y genera ranking
         """
@@ -379,7 +379,7 @@ class EvaluadorDOA:
         
         # Evaluar DOA (usar mejor método TDOA)
         mejor_metodo_tdoa = min(resultados_tdoa.keys(), 
-                               key=lambda k: resultados_tdoa[k].get('error_medio_ms', float('inf')))
+                                key=lambda k: resultados_tdoa[k].get('error_medio_ms', float('inf')))
         
         tdoas_estimados = estimador_tdoa.estimar_tdoa_array(
             sim.signals['mic_signals'], metodo=mejor_metodo_tdoa
@@ -404,9 +404,9 @@ class EvaluadorDOA:
         return np.sin(2 * np.pi * 1000 * t)  # Tono de 1kHz
     
     def graficar_resultados(self, 
-                           resultados_parametricos: Dict,
-                           parametro: str,
-                           metrica: str = 'error_doa') -> None:
+                            resultados_parametricos: Dict,
+                            parametro: str,
+                            metrica: str = 'error_doa') -> None:
         """
         Genera gráficos de resultados paramétricos
         
@@ -525,9 +525,9 @@ class EvaluadorDOA:
         if todos_errores_doa:
             ax4.hist(todos_errores_doa, bins=20, alpha=0.7, edgecolor='black')
             ax4.axvline(np.mean(todos_errores_doa), color='red', linestyle='--', 
-                       label=f'Media: {np.mean(todos_errores_doa):.2f}°')
+                        label=f'Media: {np.mean(todos_errores_doa):.2f}°')
             ax4.axvline(np.median(todos_errores_doa), color='green', linestyle='--', 
-                       label=f'Mediana: {np.median(todos_errores_doa):.2f}°')
+                        label=f'Mediana: {np.median(todos_errores_doa):.2f}°')
         
         ax4.set_xlabel('Error DOA (°)')
         ax4.set_ylabel('Frecuencia')
@@ -598,8 +598,8 @@ class EvaluadorDOA:
         return reporte
     
     def exportar_resultados(self, 
-                           resultados: Dict, 
-                           filename: str = "resultados_evaluacion.json"):
+                            resultados: Dict, 
+                            filename: str = "resultados_evaluacion.json"):
         """
         Exporta resultados a archivo JSON
         """
