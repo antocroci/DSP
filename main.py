@@ -174,10 +174,7 @@ for par, resultado in resultados_doa.items():
         angulo = resultado['angulo_deg']
         uncertainty = resultado.get('uncertainty_deg', 0)
         confidence = resultado.get('confidence', 1.0)
-        # Adjust angle transformation to match expected azimuth
-        # Since doa.py returns angle as degrees(arcsin(sin_theta)), which is angle from array axis,
-        # we can use the angle directly without subtracting from 90.
-        angulo_transformado = angulo
+        angulo_transformado = 90 - angulo
         angulos_estimados.append(angulo_transformado)
         print(f"  {par}: {angulo_transformado:.2f}° ± {uncertainty:.2f}° (confianza: {confidence:.3f})")
     else:

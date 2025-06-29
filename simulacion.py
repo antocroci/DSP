@@ -540,7 +540,7 @@ class SimuladorDOA:
             print("No hay datos para visualizar")
             return
         
-        fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(15, 12))
+        fig, ((ax1, ax4)) = plt.subplots(1, 2, figsize=(15, 12))
         
         mic_pos = self.array_geometry['positions']
         colors = ['blue', 'green', 'orange', 'purple']
@@ -581,35 +581,7 @@ class SimuladorDOA:
         ax1.grid(True, alpha=0.3)
         ax1.set_aspect('equal')
         
-        # Gráfico de ángulos por micrófono
-        ax2.set_title('Ángulos Azimutales por Micrófono')
         resultados = self.calcular_angulos_individuales()
-        
-        for s_idx, (fuente_key, datos) in enumerate(resultados.items()):
-            mic_nums = list(range(1, len(datos['angulos_individuales']) + 1))
-            ax2.plot(mic_nums, datos['angulos_individuales'], 'o-', 
-                    label=f'Fuente {s_idx+1}', linewidth=2, markersize=8)
-        
-        ax2.set_xlabel('Número de Micrófono')
-        ax2.set_ylabel('Ángulo Azimutal (°)')
-        ax2.legend()
-        ax2.grid(True, alpha=0.3)
-        # Set x-axis ticks to integers only
-        import matplotlib.ticker as ticker
-        ax2.xaxis.set_major_locator(ticker.MaxNLocator(integer=True))
-        
-        # Diferencias de distancia (importante para TDOA)
-        ax3.set_title('Diferencias de Distancia vs Mic 1')
-        for s_idx, (fuente_key, datos) in enumerate(resultados.items()):
-            mic_nums = list(range(1, len(datos['diferencias_distancia']) + 1))
-            ax3.plot(mic_nums, datos['diferencias_distancia'], 'o-', 
-                    label=f'Fuente {s_idx+1}', linewidth=2, markersize=8)
-        
-        ax3.set_xlabel('Número de Micrófono')
-        ax3.set_ylabel('Diferencia de Distancia (m)')
-        ax3.legend()
-        ax3.grid(True, alpha=0.3)
-        ax3.axhline(y=0, color='k', linestyle='-', alpha=0.3)
         
         # TDOA esperados
         ax4.set_title('TDOA Esperados vs Mic 1')
@@ -624,7 +596,8 @@ class SimuladorDOA:
         ax4.legend()
         ax4.grid(True, alpha=0.3)
         ax4.axhline(y=0, color='k', linestyle='-', alpha=0.3)
-        
+        ax4.set_xticks(range(1, 5, 1))
+
         # Agregar información de ruido en el título general
         if self.ruido_ambiente_config['habilitado']:
             fig.suptitle(f'Análisis Geométrico Detallado - Ruido Ambiente: {self.ruido_ambiente_config["tipo"]} ({self.ruido_ambiente_config["nivel_db"]:.1f} dB)')
