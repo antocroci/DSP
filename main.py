@@ -91,12 +91,15 @@ print("\nMétodos TDOA disponibles:")
 print("1. Correlación cruzada clásica")
 print("2. GCC básico")
 print("3. GCC-PHAT (recomendado)")
+print("4. GCC-SCOT")
 metodo_seleccionado = input("Seleccione método [default: 3]: ") or "3"
 
 if metodo_seleccionado == "1":
     metodo_tdoa = "correlacion"
 elif metodo_seleccionado == "2":
     metodo_tdoa = "gcc"
+elif metodo_seleccionado == "4":
+    metodo_tdoa = "gcc_scot"
 else:
     metodo_tdoa = "gcc_phat"
 
