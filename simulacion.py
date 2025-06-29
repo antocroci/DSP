@@ -594,6 +594,9 @@ class SimuladorDOA:
         ax2.set_ylabel('Ángulo Azimutal (°)')
         ax2.legend()
         ax2.grid(True, alpha=0.3)
+        # Set x-axis ticks to integers only
+        import matplotlib.ticker as ticker
+        ax2.xaxis.set_major_locator(ticker.MaxNLocator(integer=True))
         
         # Diferencias de distancia (importante para TDOA)
         ax3.set_title('Diferencias de Distancia vs Mic 1')

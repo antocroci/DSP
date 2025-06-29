@@ -152,8 +152,9 @@ for par, resultado in resultados_doa.items():
         angulo = resultado['angulo_deg']
         uncertainty = resultado.get('uncertainty_deg', 0)
         confidence = resultado.get('confidence', 1.0)
-        angulos_estimados.append(angulo)
-        print(f"  {par}: {angulo:.2f}° ± {uncertainty:.2f}° (confianza: {confidence:.3f})")
+        angulo_transformado = 90 - angulo
+        angulos_estimados.append(angulo_transformado)
+        print(f"  {par}: {angulo_transformado:.2f}° ± {uncertainty:.2f}° (confianza: {confidence:.3f})")
     else:
         print(f"  {par}: Estimación no válida - {resultado.get('error', 'Error desconocido')}")
 
