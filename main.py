@@ -102,13 +102,29 @@ else:
 
 print(f"\nUsando método TDOA: {metodo_tdoa}")
 
-# Estimar TDOA para todos los pares de micrófonos con el micrófono 1 como referencia
-resultados_tdoa = estimador_tdoa.estimar_tdoa_array(mic_signals, referencia=0, metodo=metodo_tdoa)
+# Calcular TDOA para todos los pares de micrófonos explícitamente
+pares_microfonos = [
+    (0, 1),
+    (0, 2),
+    (0, 3),
+    (1, 2),
+    (1, 3),
+    (2, 3)
+]
 
-print("\nResultados TDOA:")
-for par, resultado in resultados_tdoa.items():
+resultados_tdoa = {}
+
+print("\nCalculando TDOA para todos los pares de micrófonos:")
+for i, j in pares_microfonos:
+    resultado = estimador_tdoa.estimar_tdoa_par(
+        mic_signals[i], 
+        mic_signals[j], 
+        metodo=metodo_tdoa
+    )
+    key = f"mic_{i+1}_mic_{j+1}"
+    resultados_tdoa[key] = resultado
     tdoa_ms = resultado['tdoa_seconds'] * 1000  # Convertir a milisegundos
-    print(f"  {par}: {tdoa_ms:.3f} ms (confianza: {resultado['confidence']:.3f})")
+    print(f"  {key}: {tdoa_ms:.3f} ms (confianza: {resultado['confidence']:.3f})")
 
 # DOA - ANÁLISIS AVANZADO
 print("\n=== ANÁLISIS DOA AVANZADO ===")
@@ -158,7 +174,10 @@ for par, resultado in resultados_doa.items():
         angulo = resultado['angulo_deg']
         uncertainty = resultado.get('uncertainty_deg', 0)
         confidence = resultado.get('confidence', 1.0)
-        angulo_transformado = 90 - angulo
+        # Adjust angle transformation to match expected azimuth
+        # Since doa.py returns angle as degrees(arcsin(sin_theta)), which is angle from array axis,
+        # we can use the angle directly without subtracting from 90.
+        angulo_transformado = angulo
         angulos_estimados.append(angulo_transformado)
         print(f"  {par}: {angulo_transformado:.2f}° ± {uncertainty:.2f}° (confianza: {confidence:.3f})")
     else:
