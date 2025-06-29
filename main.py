@@ -122,7 +122,7 @@ for i, j in pares_microfonos:
     resultado = estimador_tdoa.estimar_tdoa_par(
         mic_signals[i], 
         mic_signals[j], 
-        metodo=metodo_tdoa
+        metodo = metodo_tdoa
     )
     key = f"mic_{i+1}_mic_{j+1}"
     resultados_tdoa[key] = resultado
@@ -313,7 +313,7 @@ comparar = input() or "n"
 
 if comparar.lower() == "s":
     print("Comparando métodos TDOA para micrófonos 1 y 2...")
-    metodos_comparar = ['correlacion', 'gcc', 'gcc_phat']
+    metodos_comparar = ['correlacion', 'gcc', 'gcc_phat','gcc_scot']
     resultados_comparacion = estimador_tdoa.comparar_metodos(
         mic_signals[0], 
         mic_signals[1], 
