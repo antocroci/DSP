@@ -12,6 +12,9 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 import json
 from typing import Dict, List, Optional
+import pandas as pd
+from openpyxl import load_workbook
+from datetime import datetime
 
 # Importar módulos propios
 from simulacion import SimuladorDOA, crear_senal_prueba
@@ -396,3 +399,202 @@ else:
 print(f"  - Ambigüedad detectada: {'SÍ' if ambiguedad['tiene_ambiguedad'] else 'NO'}")
 
 print("\n=== Análisis DOA/TDOA completado ===")
+
+# --- Export results and parameters to Excel ---
+
+excel_filename = "DOA_TDOA_results.xlsx"
+sheet_name = datetime.now().strftime("Run_%Y%m%d_%H%M%S")
+
+# Collect parameters
+params = {
+    "ambiente_tipo": ambiente_tipo,
+    "room_size_x": sim.room_size[0] if hasattr(sim, 'room_size') else None,
+    "room_size_y": sim.room_size[1] if hasattr(sim, 'room_size') else None,
+    "room_size_z": sim.room_size[2] if hasattr(sim, 'room_size') else None,
+    "max_order": getattr(sim, 'max_order', None),
+    "absorption": getattr(sim, 'absorption', None),
+    "air_absorption": getattr(sim, 'air_absorption', None),
+    "fs": sim.fs,
+    "wav_path": wav_path,
+    "azimuth_real": azimuth_real,
+    "distancia_real": distancia_real,
+    "elevacion_real": elevacion_real,
+    "num_mics": num_mics,
+    "array_tipo": array_tipo,
+    "spacing_cm": spacing*100,
+    "metodo_tdoa": metodo_tdoa,
+    "metodo_promedio": resultado_promedio.get('metodo_promedio', None) if resultado_promedio else None,
+    "angulo_real": azimuth_real,
+    "angulo_estimado": angulo_promedio,
+    "error_absoluto": abs(angulo_promedio - azimuth_real) if angulo_promedio is not None else None,
+    "ambiguedad_detectada": ambiguedad['tiene_ambiguedad'],
+}
+
+# Convert TDOA results to DataFrame
+tdoa_df = pd.DataFrame.from_dict(resultados_tdoa, orient='index')
+tdoa_df = tdoa_df.rename(columns={
+    'tdoa_seconds': 'TDOA_seconds',
+    'confidence': 'Confidence',
+    'lags': 'Lags',
+    'correlation_normalized': 'Correlation_Normalized'
+})
+
+# Convert DOA results to DataFrame
+doa_list = []
+for par, res in resultados_doa.items():
+    entry = {
+        "Pair": par,
+        "Valid": res.get('valido', False),
+        "Angle_deg": res.get('angulo_deg', None),
+        "Uncertainty_deg": res.get('uncertainty_deg', None),
+        "Confidence": res.get('confidence', None),
+        "Error": res.get('error', None)
+    }
+    doa_list.append(entry)
+doa_df = pd.DataFrame(doa_list)
+
+# Ambiguity data
+ambiguity_df = pd.DataFrame([ambiguedad])
+
+# Triangulation data
+triangulation_data = {}
+if 'resultado_triangulacion' in locals() and resultado_triangulacion.get('valido', False):
+    triangulation_data = {
+        "Pos_x": resultado_triangulacion['posicion'][0],
+        "Pos_y": resultado_triangulacion['posicion'][1],
+        "Pos_z": resultado_triangulacion['posicion'][2],
+        "Error_RMS": resultado_triangulacion['error_rms']
+    }
+triangulation_df = pd.DataFrame([triangulation_data]) if triangulation_data else pd.DataFrame()
+
+# Create a Pandas Excel writer using openpyxl engine
+import zipfile
+
+if os.path.exists(excel_filename):
+    try:
+        book = load_workbook(excel_filename)
+        writer = pd.ExcelWriter(
+            excel_filename,
+            engine='openpyxl',
+            mode='a',
+            if_sheet_exists='new',
+            engine_kwargs={'book': book}
+        )
+    except (zipfile.BadZipFile, IOError):
+        print(f"Warning: Existing file '{excel_filename}' is corrupted or not a valid Excel file. Creating a new file.")
+        writer = pd.ExcelWriter(excel_filename, engine='openpyxl')
+else:
+    writer = pd.ExcelWriter(excel_filename, engine='openpyxl')
+
+# Write parameters
+params_df = pd.DataFrame(list(params.items()), columns=['Parameter', 'Value'])
+params_df.to_excel(writer, sheet_name=sheet_name, index=False, startrow=0)
+
+# Write TDOA results
+tdoa_df.to_excel(writer, sheet_name=sheet_name, index=True, startrow=len(params_df)+2)
+
+# Write DOA results
+doa_df.to_excel(writer, sheet_name=sheet_name, index=False, startrow=len(params_df)+len(tdoa_df)+4)
+
+# Write Ambiguity results
+ambiguity_df.to_excel(writer, sheet_name=sheet_name, index=False, startrow=len(params_df)+len(tdoa_df)+len(doa_df)+6)
+
+# Write Triangulation results if available
+if not triangulation_df.empty:
+    triangulation_df.to_excel(writer, sheet_name=sheet_name, index=False, startrow=len(params_df)+len(tdoa_df)+len(doa_df)+len(ambiguity_df)+8)
+
+writer.close()
+
+print(f"\nResults and parameters exported to Excel file '{excel_filename}' in sheet '{sheet_name}'.")
+
+# --- Save and embed matplotlib figures as images in Excel ---
+
+from openpyxl.drawing.image import Image as XLImage
+import tempfile
+
+def save_fig_to_tempfile(fig, prefix):
+    tmp_file = tempfile.NamedTemporaryFile(suffix=".png", prefix=prefix, delete=False)
+    fig.savefig(tmp_file.name, bbox_inches='tight')
+    tmp_file.close()
+    return tmp_file.name
+
+# List to hold image file paths for cleanup
+image_files = []
+
+# Save correlation TDOA figure
+fig_corr = plt.figure(figsize=(8, 6))
+par_visualizar = list(resultados_tdoa.keys())[0]  # Primer par
+estimador_tdoa.visualizar_correlacion(
+    resultados_tdoa[par_visualizar], 
+    titulo=f"Correlación TDOA usando {metodo_tdoa}"
+)
+fig_corr = plt.gcf()
+img_corr_path = save_fig_to_tempfile(fig_corr, "tdoa_correlation_")
+image_files.append(img_corr_path)
+plt.close(fig_corr)
+
+# Save DOA estimations figure
+fig_doa = plt.figure(figsize=(8, 6))
+estimador_doa.visualizar_estimaciones(resultados_doa, angulo_real=azimuth_real)
+fig_doa = plt.gcf()
+img_doa_path = save_fig_to_tempfile(fig_doa, "doa_estimations_")
+image_files.append(img_doa_path)
+plt.close(fig_doa)
+
+# Save TDOA methods comparison figure if generated
+if 'comparar' in locals() and comparar.lower() == "s":
+    fig_comp = plt.figure(figsize=(12, 8))
+    for i, (metodo, resultado) in enumerate(resultados_comparacion.items()):
+        if resultado:
+            plt.subplot(len(resultados_comparacion), 1, i+1)
+            lags_ms = resultado['lags'] * 1000 / sim.fs  # Convertir a ms
+            plt.plot(lags_ms, resultado['correlation_normalized'])
+            plt.axvline(x=resultado['tdoa_seconds']*1000, color='red', linestyle='--',
+                        label=f'TDOA = {resultado["tdoa_seconds"]*1000:.2f} ms')
+            plt.title(f'Método: {metodo}')
+            plt.xlabel('Retardo (ms)')
+            plt.ylabel('Correlación Normalizada')
+            plt.grid(True, alpha=0.3)
+            plt.legend()
+    plt.tight_layout()
+    img_comp_path = save_fig_to_tempfile(fig_comp, "tdoa_comparison_")
+    image_files.append(img_comp_path)
+    plt.close(fig_comp)
+else:
+    img_comp_path = None
+
+# Embed images into Excel sheet
+ws = writer.book[sheet_name]
+
+# Starting row for images (after data)
+start_row = len(params_df) + len(tdoa_df) + len(doa_df) + len(ambiguity_df) + (len(triangulation_df) if not triangulation_df.empty else 0) + 12
+img_row = start_row
+
+def add_image_to_sheet(ws, img_path, row, col=1):
+    img = XLImage(img_path)
+    img.anchor = ws.cell(row=row, column=col).coordinate
+    ws.add_image(img)
+
+# Add correlation TDOA image
+add_image_to_sheet(ws, img_corr_path, img_row)
+img_row += 20  # Adjust row spacing for next image
+
+# Add DOA estimations image
+add_image_to_sheet(ws, img_doa_path, img_row)
+img_row += 20
+
+# Add TDOA comparison image if available
+if img_comp_path:
+    add_image_to_sheet(ws, img_comp_path, img_row)
+    img_row += 20
+
+# Save and close writer again to include images
+writer.close()
+
+# Cleanup temporary image files
+import os
+for img_file in image_files:
+    try:
+        os.remove(img_file)
+    except Exception as e:
+        print(f"Warning: Could not remove temporary image file {img_file}: {e}")
