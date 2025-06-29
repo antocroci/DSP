@@ -276,7 +276,7 @@ class EstimadorTDOA:
                 # Verificar que esté en rango válido
                 if abs(sin_theta) <= 1.0:
                     theta_rad = np.pi/2 - np.arcsin(sin_theta)
-                    theta_deg = np.degrees(np.pi/2 - theta_rad)
+                    theta_deg = np.degrees(theta_rad)
                     
                     angulos[par_key] = {
                         'angulo_rad': float(theta_rad),
