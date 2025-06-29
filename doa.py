@@ -61,12 +61,12 @@ class EstimadorDOA:
             
             # Verificar rango físico válido
             if abs(sin_theta) <= 1.0:
-                theta_rad = np.arcsin(sin_theta)
-                theta_deg = np.degrees(theta_rad)
-                
+                theta_rad = (np.pi)/2 - np.arcsin(sin_theta)
+                theta_deg = 90 - np.degrees(theta_rad)
+        
                 # Calcular incertidumbre basada en confianza de TDOA
                 confidence = tdoa_data.get('confidence', 1.0)
-                uncertainty_rad = np.arcsin(min(1.0, max(-1.0, self.c / (spacing * confidence)))) if confidence > 0 else np.pi/2
+                uncertainty_rad = np.arcsin(self.c / (spacing * confidence)) if confidence > 0 else np.pi/2
                 uncertainty_deg = np.degrees(uncertainty_rad)
                 
                 angulos[par_key] = {
@@ -90,44 +90,6 @@ class EstimadorDOA:
                     'valido': False,
                     'error': f'TDOA fuera de rango físico (sin_theta = {sin_theta:.3f})',
                     'metodo': 'trigonometria_lineal'
-                }
-        
-        return angulos
-    
-    def _calcular_angulo_circular(self, tdoas: Dict, radio: float) -> Dict:
-        """
-        Calcula ángulos para array circular
-        """
-        angulos = {}
-        
-        for par_key, tdoa_data in tdoas.items():
-            tdoa_sec = tdoa_data['tdoa_seconds']
-            
-            # Para array circular, la geometría es más compleja
-            # Aproximación: θ ≈ arcsin(c * TDOA / (2 * radio))
-            sin_theta = (self.c * tdoa_sec) / (2 * radio)
-            
-            if abs(sin_theta) <= 1.0:
-                theta_rad = np.arcsin(sin_theta)
-                theta_deg = np.degrees(theta_rad)
-                
-                angulos[par_key] = {
-                    'angulo_rad': float(theta_rad),
-                    'angulo_deg': float(theta_deg),
-                    'sin_theta': float(sin_theta),
-                    'tdoa_usado': float(tdoa_sec),
-                    'valido': True,
-                    'metodo': 'trigonometria_circular'
-                }
-            else:
-                angulos[par_key] = {
-                    'angulo_rad': None,
-                    'angulo_deg': None,
-                    'sin_theta': float(sin_theta),
-                    'tdoa_usado': float(tdoa_sec),
-                    'valido': False,
-                    'error': 'TDOA fuera de rango físico',
-                    'metodo': 'trigonometria_circular'
                 }
         
         return angulos
