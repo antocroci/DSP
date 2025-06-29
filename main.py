@@ -49,7 +49,25 @@ else:
     )
 
 # Crear señal de prueba
-signal = crear_senal_prueba("chirp", duracion=1.0)
+# signal = crear_senal_prueba("chirp", duracion=1.0)
+
+# Cargar señal WAV individual directamente sin metadata
+wav_path = input("Ingrese la ruta completa del archivo WAV para cargar (ejemplo: simulaciones/p227_004.wav): ")
+
+from scipy.io import wavfile
+import os
+
+while not wav_path or not os.path.isfile(wav_path):
+    print("Ruta inválida o archivo no encontrado. Por favor, ingrese una ruta válida.")
+    wav_path = input("Ingrese la ruta completa del archivo WAV para cargar (ejemplo: simulaciones/p227_004.wav): ")
+
+fs_loaded, signal = wavfile.read(wav_path)
+signal = signal.astype(np.float32) / 32767.0  # Normalizar
+
+# Actualizar frecuencia de muestreo si es diferente
+if fs_loaded != sim.fs:
+    print(f"Advertencia: La frecuencia de muestreo cargada ({fs_loaded}) es diferente de la configurada ({sim.fs}). Se actualizará.")
+    sim.fs = fs_loaded
 
 # Configuración de fuentes
 print("\n2. FUENTES SONORAS:")
