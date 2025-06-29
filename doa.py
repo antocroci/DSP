@@ -62,7 +62,7 @@ class EstimadorDOA:
             # Verificar rango físico válido
             if abs(sin_theta) <= 1.0:
                 theta_rad = (np.pi)/2 - np.arcsin(sin_theta)
-                theta_deg = 90 - np.degrees(theta_rad)
+                theta_deg = np.degrees(np.pi/2 - theta_rad)
         
                 # Calcular incertidumbre basada en confianza de TDOA
                 confidence = tdoa_data.get('confidence', 1.0)
