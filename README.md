@@ -1,6 +1,10 @@
 #  Estimación de Dirección de Arribo (DOA) usando TDOA
 
-Este proyecto simula cómo un arreglo de micrófonos puede estimar de dónde viene un sonido usando **retardos temporales (TDOA)**. Probamos diferentes algoritmos de correlación como **CCC, GCC, PHAT y SCOT** en distintos entornos simulados (con y sin reverberación), usando la librería `pyroomacoustics`.
+Este repositorio contiene el desarrollo completo de un trabajo de investigación centrado en la estimación de la dirección de arribo (DOA) de fuentes sonoras mediante técnicas basadas en la diferencia de tiempos de arribo (TDOA). El objetivo principal es analizar el comportamiento y la precisión de distintos algoritmos en escenarios simulados, como paso preliminar para su aplicación en entornos reales de localización acústica.
+
+Para las simulaciones se utilizó la librería pyroomacoustics, que permite recrear condiciones acústicas variadas, incluyendo ambientes anecoicos y reverberantes. El estudio evalúa el impacto de variables clave como el ángulo azimutal de la fuente, la distancia entre la fuente y el array, el nivel de ruido, el tipo de ruido y la posicion del arreglo. 
+
+Este trabajo busca sentar las bases para el desarrollo de sistemas de localización acústica multicanal, con aplicaciones en campos como la robótica, los audífonos inteligentes, la realidad aumentada y los sistemas de vigilancia sonora.
 
 ---
 
@@ -15,13 +19,17 @@ Este proyecto simula cómo un arreglo de micrófonos puede estimar de dónde vie
 ---
 
 ## Estructura básica
-## cambiar!!!
 ```
-src/
-├── doa/           # estimación de TDOA y DOA
-├── sim/           # setup de sala, micrófonos y fuente
-├── utils/         # helpers para gráficos, etc.
-notebooks/
-├── demo.ipynb     # ejemplo completo paso a paso
-results/           # figuras y resultados generados
+TP_DOA/
+│
+├── datos/                 # Señales simuladas, configuraciones, logs
+├── simulacion.py
+├── tdoa.py
+├── doa.py
+├── evaluacion.py
+├── main.py
+├── informe/
+│   ├── informe.tex/.docx
+│   └── figuras/
+└── README.md              # Instrucciones para correr el código
 ```
