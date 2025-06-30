@@ -10,9 +10,10 @@ Este trabajo busca sentar las bases para el desarrollo de sistemas de localizaci
 
 ## ¿Qué hace este código?
 
-* Crea una sala simulada con un arreglo lineal de micrófonos.
+* Crea una sala simulada (anecoica o reverberante) a partir de dimensiones de la sala ingresadas por el usuario
+* Define un arreglo lineal de micrófonos, posicionado por el usuario.
 * Genera una fuente sonora.
-* Calcula los TDOA entre pares de micrófonos.
+* Calcula los TDOA entre pares de micrófonos: con 4 métodos CCC, GCC básico, GCC Phat y GCC-Scot.
 * Estima el ángulo de llegada (DOA).
 * Compara el ángulo real vs. el estimado y lo grafica.
 
