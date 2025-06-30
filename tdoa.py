@@ -10,7 +10,7 @@ class EstimadorTDOA:
     Clase para estimación de TDOA (Time Difference of Arrival) y DOA (Direction of Arrival)
     """
     
-    def __init__(self, fs: int = 16000, c: float = 343.0):
+    def __init__(self, fs: int = 48000, c: float = 343.0):
         """
         Inicializa el estimador TDOA
         
@@ -462,7 +462,7 @@ class EstimadorTDOA:
         }
 
 # Funciones de utilidad
-def crear_senal_test(tipo: str = "chirp", duracion: float = 1.0, fs: int = 16000) -> np.ndarray:
+def crear_senal_test(tipo: str = "chirp", duracion: float = 1.0, fs: int = 48000) -> np.ndarray:
     """
     Crea señales de prueba para testing
     """
@@ -486,10 +486,10 @@ if __name__ == "__main__":
     print("=== TESTING MÓDULO TDOA ===")
     
     # Crear estimador
-    estimador = EstimadorTDOA(fs=16000)
+    estimador = EstimadorTDOA(fs=48000)
     
     # Crear señales de prueba con TDOA conocido
-    fs = 16000
+    fs = 48000
     duracion = 1.0
     tdoa_real = 0.001  # 1 ms de retardo
     
