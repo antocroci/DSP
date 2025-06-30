@@ -73,12 +73,9 @@ if fs_loaded != sim.fs:
 print("\n2. FUENTES SONORAS:")
 azimuth_real = float(input(f"     Azimuth en grados [default: 60]: ") or 60.0)
 distancia_real = float(input("     Distancia en metros [default: 2.0]: ") or 2.0)
-if distancia_real <= 2.0:
+while distancia_real < 2.0:
     print("Se debe mantener la condición de campo lejano con una distancia mayor a 2 metros.")
     distancia_real = float(input("Ingrese una distancia en metros mayor a 2.0: ") or 2.0)
-    if distancia_real <= 2.0:
-        distancia_real = 2.0
-        print("ERROR: Valor ingresado menor a 2 metros. Distancia en metros: 2.0")
 elevacion_real = float(input("     Elevación en grados [default: 0.0]: ") or 0.0)
 
 sim.agregar_fuente(signal, azimuth=azimuth_real, distance=distancia_real, elevation=elevacion_real)

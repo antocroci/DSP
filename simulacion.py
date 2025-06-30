@@ -444,6 +444,7 @@ class SimuladorDOA:
         ])
         ax1.plot(room_corners[:, 0], room_corners[:, 1], 'k-', linewidth=2, label='Recinto')
         
+        
         # Micrófonos
         mic_pos = self.array_geometry['positions']
         ax1.scatter(mic_pos[0, :], mic_pos[1, :], c='blue', s=100, marker='o', label='Micrófonos')
